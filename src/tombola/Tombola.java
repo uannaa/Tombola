@@ -70,15 +70,42 @@ public class Tombola {
         
         Random rand = new Random();
         
+        int max = 9;
+        int min = 1;
         
+        for (int i = 0; i < cartella.length; i++) {
+            
+            for (int j = 0; j < cartella[i].length; j++) {
+//                
+
+                
+                
+            }
+            
+        }
         
+        System.out.println("\nCartella: \n");
         
         //print cartella
         for (int i = 0; i < cartella.length; i++) {
             
             for (int j = 0; j < cartella[i].length; j++) {
                 
-                System.out.println(cartella[i][j]);
+                if (cartella[i][j] < 10) {
+                    
+                    System.out.print("0");
+                    
+                }
+                
+                System.out.print(cartella[i][j] + " ");
+                
+                
+                
+                if (j == 8) {
+                    
+                    System.out.println();
+                    
+                }
                 
             }
             
