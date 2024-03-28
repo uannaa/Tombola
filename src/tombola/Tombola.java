@@ -4,7 +4,9 @@
  */
 package tombola;
 
+import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  *
@@ -16,10 +18,6 @@ public class Tombola {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
-        
-        
-        spaziVuoti();
         
         int cartella[][] = new int[3][9];
         int tombolone[][] = new int[9][10];
@@ -70,6 +68,8 @@ public class Tombola {
             
         }
         
+        
+        
         //creazione cartella
         
         Random rand = new Random();
@@ -80,12 +80,12 @@ public class Tombola {
         for (int i = 0; i < cartella.length; i++) {
             
             max = 9;
-            min = 0;
+            min = 1;
             
             for (int j = 0; j < cartella[i].length; j++) {
                 
                 cartella[i][j] = rand.nextInt(max - min) + min;
-                rimuoviDuplicati(cartella, max, min);
+                rimuoviDuplicatiEGeneraCasualeColonne(cartella, max, min);
                 
                 
                 max += 10;
@@ -95,33 +95,34 @@ public class Tombola {
             
         }
         
+        ordinaMatrice(cartella);
+        spaziVuoti(cartella);
         
+        //print cartella
         
         System.out.println("\nCartella: \n");
         
-        ordinaMatrice(cartella);
-        
-        
-        for (int i = 0; i < 4; i++) {
-            
-            System.out.println(spaziVuoti());
-            
-        }
-        
-        //print cartella
         for (int i = 0; i < cartella.length; i++) {
             
             for (int j = 0; j < cartella[i].length; j++) {
                 
-                if (cartella[i][j] < 10) {
+
+                
+                if (cartella[i][j] < 10 && cartella[i][j] != 0) {
                     
                     System.out.print("0");
                     
                 }
                 
-                System.out.print(cartella[i][j] + " ");
-                
-                
+                if (cartella[i][j] != 0) {
+                    
+                    System.out.print(cartella[i][j] + " ");
+                    
+                } else if (cartella[i][j] == 0) {
+                    
+                    System.out.print("// ");
+                    
+                }
                 
                 if (j == 8) {
                     
@@ -133,69 +134,96 @@ public class Tombola {
             
         }
         
-        for (int i = 0; i < cartella.length; i++) {
-            
-            for (int j = 0; j < cartella[i].length; j++) {
-                
-                if (cartella[i][j] == 0) {
-                    
-                    
-                    
-                }
-            }
-            
-        }
-        
-
-        
-        System.out.println("\nCartella: \n");
-//        
-//        for (int i = 0; i < cartella.length; i++) {
-//            
-//            for (int j = 0; j < cartella[i].length; j++) {
-//                
-//                if (cartella[i][j] < 10) {
-//                    
-//                    System.out.print("0");
-//                    
-//                }
-//                
-//                System.out.print(cartella[i][j] + " ");
-//                
-//                
-//                
-//                if (j == 8) {
-//                    
-//                    System.out.println();
-//                    
-//                }
-//                
-//            }
-//            
-//        }
+        estrainumero();
+        controllaNumTabellone(tombolone);
+        controlloCartella(cartella);
         
     }
     
-    public static void rimuoviDuplicati(int matrice[][], int max, int min) {
+    public static void controllaNumTabellone(int tabellone[][]) {
         
-        Random rand = new Random();
         
-        for (int colonna = 0; colonna < matrice[0].length; colonna++) {
+        
+    }
+    
+    public static void controlloCartella(int cartella[][]){
+        
+        int estratti[] = estrainumero();
+        
+        for (int i = 0; i < estratti.length; i++) {
             
-            for (int riga = 0; riga < matrice.length; riga++) {
+            for (int j = 0; j < cartella.length; j++) {
                 
-                int valoreCorrente = matrice[riga][colonna];
-                
-                for (int confrontoRiga = riga + 1; confrontoRiga < matrice.length; confrontoRiga++) {
+                for (int k = 0; k < cartella[j].length; k++) {
                     
-                    if (matrice[confrontoRiga][colonna] == valoreCorrente) {
-                        matrice[confrontoRiga][colonna] = 0; 
+                    if (estratti[i] == cartella[j][k]) {
+                        
+                        System.out.println("HAI IL NUMERO " + estratti[i]);
+                        
                     }
                     
                 }
+                
             }
+            
         }
         
+    }
+    
+    
+    public static int[] estrainumero() {
+        
+        Random rand = new Random();
+        Scanner s = new Scanner(System.in);
+        
+        int estratto[] = new int[90];
+        
+        for (int i = 0; i < estratto.length; i++) {
+            
+            System.out.println("Vuoi estrarre un numero?\n[1] Si \n[2] No\n");
+            char select = s.next().charAt(0);
+            
+            if (select == '1') {
+                
+                estratto[i] = rand.nextInt(90 - 1) + 1;
+                System.out.println("Il numero estratto e' " + estratto[i]);
+                
+            } else if (select == '2') {
+                
+                break;
+                
+            } else {
+                
+                System.out.println("Error");
+                
+            }
+            
+            
+        }     
+        
+        return estratto;
+        
+    }
+    
+    public static void rimuoviDuplicatiEGeneraCasualeColonne(int[][] matrice, int max, int min) {
+        Random random = new Random();
+
+        for (int j = 0; j < matrice[0].length; j++) {
+            boolean[] presenti = new boolean[90];
+
+            for (int i = 0; i < matrice.length; i++) {
+                if (!presenti[matrice[i][j]]) {
+                    presenti[matrice[i][j]] = true;
+                } else {
+                    int numeroCasuale;
+                    do {
+                        numeroCasuale = random.nextInt(max - min) + min; // Genera un numero casuale da 0 a 8
+                    } while (presenti[numeroCasuale]);
+                    presenti[numeroCasuale] = true;
+                    matrice[i][j] = numeroCasuale;
+                }
+            }
+        }
     }
     
     public static void ordinaMatrice(int[][]cartella){
@@ -225,31 +253,84 @@ public class Tombola {
         }
     }
     
-    public static int[] spaziVuoti() {
+    public static void spaziVuoti(int matrice[][]) {
         
         Random rand = new Random();
         
-        int numvuoti[] = new int[4];
-        int numvuoti2[] = new int[4];
-        int numvuoti3[] = new int[4];
+        int spazivuoti[][] = new int[3][4];
         
-        for (int i = 0; i < numvuoti.length; i++) {
+        for (int i = 0; i < spazivuoti.length; i++) {
             
-            numvuoti[i] = rand.nextInt(8-0) + 0;
-            for (int j = 0; j < numvuoti.length; j++) {
+            for (int j = 0; j < spazivuoti[i].length; j++) {
                 
-                while (numvuoti[i] == numvuoti[j]) {
-                    
-                    numvuoti[i] = rand.nextInt(8-0) + 0;
-                    
-                }
+                spazivuoti[i][j] = rand.nextInt(8 - 0) - 0;
                 
             }
             
         }
         
-        return numvuoti;
+        rimuoviDuplicatiEGeneraCasuale(spazivuoti, 8, 0);
         
+        
+        for (int i = 0; i < spazivuoti.length; i++) {
+        
+            for (int j = 0; j < spazivuoti[i].length; j++) {
+                
+                int k = spazivuoti[i][j];
+                
+                matrice[i][k] = 0;
+                
+            }
+        
+        }
+        
+//        print
+//        int temp = 0;
+//        
+//        for (int i = 0; i < spazivuoti.length; i++) {
+//            
+//            for (int j = 0; j < spazivuoti[i].length; j++) {
+//                
+//                if (temp != i) {
+//                    
+//                    System.out.println();
+//                    
+//                }
+//                System.out.print(spazivuoti[i][j]);
+//                
+//                temp = i;
+//            }
+//            
+//            System.out.println();
+//            
+//        }
+        
+    }
+    
+    public static void rimuoviDuplicatiEGeneraCasuale(int[][] matrice, int max, int min) {
+        Random random = new Random();
+
+        for (int i = 0; i < matrice.length; i++) {
+            boolean[] presenti = new boolean[9];
+            int[] nuovaRiga = new int[matrice[i].length];
+            int index = 0;
+
+            for (int numero : matrice[i]) {
+                if (!presenti[numero]) {
+                    presenti[numero] = true;
+                    nuovaRiga[index++] = numero;
+                } else {
+                    int numeroCasuale;
+                    do {
+                        numeroCasuale = random.nextInt(max - min) + min; // Genera un numero casuale da 0 a 8
+                    } while (presenti[numeroCasuale]);
+                    presenti[numeroCasuale] = true;
+                    nuovaRiga[index++] = numeroCasuale;
+                }
+            }
+
+            matrice[i] = Arrays.copyOf(nuovaRiga, index);
+        }
     }
     
 }
