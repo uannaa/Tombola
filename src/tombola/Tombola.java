@@ -23,7 +23,6 @@ public class Tombola {
         int tombolone[][] = new int[9][10];
         int k = 1;
         
-        
         //Tombolone
         for (int i = 0; i < tombolone.length; i++) {
             
@@ -70,8 +69,80 @@ public class Tombola {
         
         
         
-        //creazione cartella
+//        //creazione cartella
+//        
+//        Random rand = new Random();
+//        
+//        int max = 0;
+//        int min = 0;
+//        
+//        for (int i = 0; i < cartella.length; i++) {
+//            
+//            max = 9;
+//            min = 1;
+//            
+//            for (int j = 0; j < cartella[i].length; j++) {
+//                
+//                cartella[i][j] = rand.nextInt(max - min) + min;
+//                rimuoviDuplicatiEGeneraCasualeColonne(cartella, max, min);
+//                
+//                
+//                max += 10;
+//                min += 10;
+//                
+//            }
+//            
+//        }
+//        
+//        ordinaMatrice(cartella);
+//        spaziVuoti(cartella);
+//        
+//        //print cartella
+//        
+//        System.out.println("\nCartella: \n");
+//        
+//        for (int i = 0; i < cartella.length; i++) {
+//            
+//            for (int j = 0; j < cartella[i].length; j++) {
+//                
+//
+//                
+//                if (cartella[i][j] < 10 && cartella[i][j] != 0) {
+//                    
+//                    System.out.print("0");
+//                    
+//                }
+//                
+//                if (cartella[i][j] != 0) {
+//                    
+//                    System.out.print(cartella[i][j] + " ");
+//                    
+//                } else if (cartella[i][j] == 0) {
+//                    
+//                    System.out.print("// ");
+//                    
+//                }
+//                
+//                if (j == 8) {
+//                    
+//                    System.out.println();
+//                    
+//                }
+//                
+//            }
+//            
+//        }
+
+
+        CreaCartella(cartella);
+        System.out.println("\nCartella: \n");
+        printCartella(cartella);
+        estrainumero(cartella);
         
+    }
+    
+    public static void CreaCartella(int cartella[][]) {
+     
         Random rand = new Random();
         
         int max = 0;
@@ -98,9 +169,9 @@ public class Tombola {
         ordinaMatrice(cartella);
         spaziVuoti(cartella);
         
-        //print cartella
-        
-        System.out.println("\nCartella: \n");
+    }
+    
+    public static void printCartella(int cartella[][]) {
         
         for (int i = 0; i < cartella.length; i++) {
             
@@ -134,10 +205,6 @@ public class Tombola {
             
         }
         
-        estrainumero();
-        controllaNumTabellone(tombolone);
-        controlloCartella(cartella);
-        
     }
     
     public static void controllaNumTabellone(int tabellone[][]) {
@@ -146,37 +213,13 @@ public class Tombola {
         
     }
     
-    public static void controlloCartella(int cartella[][]){
-        
-        int estratti[] = estrainumero();
-        
-        for (int i = 0; i < estratti.length; i++) {
-            
-            for (int j = 0; j < cartella.length; j++) {
+    public static int[] estrainumero(int cartella[][]) {
                 
-                for (int k = 0; k < cartella[j].length; k++) {
-                    
-                    if (estratti[i] == cartella[j][k]) {
-                        
-                        System.out.println("HAI IL NUMERO " + estratti[i]);
-                        
-                    }
-                    
-                }
-                
-            }
-            
-        }
-        
-    }
-    
-    
-    public static int[] estrainumero() {
-        
         Random rand = new Random();
         Scanner s = new Scanner(System.in);
         
         int estratto[] = new int[90];
+        int contatore = 0;
         
         for (int i = 0; i < estratto.length; i++) {
             
@@ -187,6 +230,26 @@ public class Tombola {
                 
                 estratto[i] = rand.nextInt(90 - 1) + 1;
                 System.out.println("Il numero estratto e' " + estratto[i]);
+                
+                for (int h = 0; h < cartella.length; h++) {
+                    
+                    for (int g = 0; g < cartella[h].length; g++) {
+                        
+                        if (cartella[h][g] == estratto[i]) {
+                            
+                            cartella[h][g] = 91;
+                            System.out.println("Hai questo numero!");
+                            System.out.println("Cartella aggiornata: ");
+                            printCartella(cartella);
+                            System.out.println();
+                            contatore++;
+                            
+                        }
+                        
+                    }
+                    
+                }
+                
                 
             } else if (select == '2') {
                 
