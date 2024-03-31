@@ -13,22 +13,31 @@ import java.util.Scanner;
  * @author paolo
  */
 public class Tombola {
-
-    /**
-     * @param args the command line arguments
-     */
+    
     public static void main(String[] args) {
         
         int cartella[][] = new int[3][9];
         int tombolone[][] = new int[9][10];
-        int k = 1;
         
+        
+
+        Tabellone(tombolone);
+        CreaCartella(cartella);
+        System.out.println("\nCartella: \n");
+        print(cartella);
+        estrainumero(cartella);
+        
+    }
+    
+    public static void Tabellone(int matrice[][]) {
+        
+        int k = 1;
         //Tombolone
-        for (int i = 0; i < tombolone.length; i++) {
+        for (int i = 0; i < matrice.length; i++) {
             
-            for (int j = 0; j < tombolone[i].length; j++) {
+            for (int j = 0; j < matrice[i].length; j++) {
                 
-                tombolone[i][j] = k;
+                matrice[i][j] = k;
                 k++;
                 
             }
@@ -37,11 +46,11 @@ public class Tombola {
         
         System.out.println("Tombolone: \n");
         
-        for (int i = 0; i < tombolone.length; i ++) {
+        for (int i = 0; i < matrice.length; i ++) {
             
-            for (int j = 0; j < tombolone[i].length; j++) {
+            for (int j = 0; j < matrice[i].length; j++) {
                 
-                if (tombolone[i][j] < 10) {
+                if (matrice[i][j] < 10) {
                     
                     System.out.print("0");
                     
@@ -49,9 +58,9 @@ public class Tombola {
                 
 
                 
-                System.out.print(tombolone[i][j] + " ");
+                System.out.print(matrice[i][j] + " ");
                 
-                if(tombolone[i][j] % 10 == 5) {
+                if(matrice[i][j] % 10 == 5) {
                     
                     System.out.print("| ");
                     
@@ -66,78 +75,6 @@ public class Tombola {
             }
             
         }
-        
-        
-        
-//        //creazione cartella
-//        
-//        Random rand = new Random();
-//        
-//        int max = 0;
-//        int min = 0;
-//        
-//        for (int i = 0; i < cartella.length; i++) {
-//            
-//            max = 9;
-//            min = 1;
-//            
-//            for (int j = 0; j < cartella[i].length; j++) {
-//                
-//                cartella[i][j] = rand.nextInt(max - min) + min;
-//                rimuoviDuplicatiEGeneraCasualeColonne(cartella, max, min);
-//                
-//                
-//                max += 10;
-//                min += 10;
-//                
-//            }
-//            
-//        }
-//        
-//        ordinaMatrice(cartella);
-//        spaziVuoti(cartella);
-//        
-//        //print cartella
-//        
-//        System.out.println("\nCartella: \n");
-//        
-//        for (int i = 0; i < cartella.length; i++) {
-//            
-//            for (int j = 0; j < cartella[i].length; j++) {
-//                
-//
-//                
-//                if (cartella[i][j] < 10 && cartella[i][j] != 0) {
-//                    
-//                    System.out.print("0");
-//                    
-//                }
-//                
-//                if (cartella[i][j] != 0) {
-//                    
-//                    System.out.print(cartella[i][j] + " ");
-//                    
-//                } else if (cartella[i][j] == 0) {
-//                    
-//                    System.out.print("// ");
-//                    
-//                }
-//                
-//                if (j == 8) {
-//                    
-//                    System.out.println();
-//                    
-//                }
-//                
-//            }
-//            
-//        }
-
-
-        CreaCartella(cartella);
-        System.out.println("\nCartella: \n");
-        printCartella(cartella);
-        estrainumero(cartella);
         
     }
     
@@ -158,7 +95,6 @@ public class Tombola {
                 cartella[i][j] = rand.nextInt(max - min) + min;
                 rimuoviDuplicatiEGeneraCasualeColonne(cartella, max, min);
                 
-                
                 max += 10;
                 min += 10;
                 
@@ -171,13 +107,11 @@ public class Tombola {
         
     }
     
-    public static void printCartella(int cartella[][]) {
+    public static void print(int cartella[][]) {
         
         for (int i = 0; i < cartella.length; i++) {
             
             for (int j = 0; j < cartella[i].length; j++) {
-                
-
                 
                 if (cartella[i][j] < 10 && cartella[i][j] != 0) {
                     
@@ -185,15 +119,19 @@ public class Tombola {
                     
                 }
                 
-                if (cartella[i][j] != 0) {
+
+                if (cartella[i][j] != 0 && cartella[i][j] != 91) {
                     
                     System.out.print(cartella[i][j] + " ");
                     
-                } else if (cartella[i][j] == 0) {
+                } else if (cartella[i][j] == 0 || cartella[i][j] > 90) {
                     
                     System.out.print("// ");
                     
                 }
+                
+
+                
                 
                 if (j == 8) {
                     
@@ -205,11 +143,7 @@ public class Tombola {
             
         }
         
-    }
-    
-    public static void controllaNumTabellone(int tabellone[][]) {
-        
-        
+        System.out.println();
         
     }
     
@@ -240,15 +174,18 @@ public class Tombola {
                             cartella[h][g] = 91;
                             System.out.println("Hai questo numero!");
                             System.out.println("Cartella aggiornata: ");
-                            printCartella(cartella);
+                            print(cartella);
                             System.out.println();
                             contatore++;
                             
+                           
                         }
                         
                     }
                     
                 }
+                
+                System.out.println();
                 
                 
             } else if (select == '2') {
@@ -280,7 +217,7 @@ public class Tombola {
                 } else {
                     int numeroCasuale;
                     do {
-                        numeroCasuale = random.nextInt(max - min) + min; // Genera un numero casuale da 0 a 8
+                        numeroCasuale = random.nextInt(max - min) + min;
                     } while (presenti[numeroCasuale]);
                     presenti[numeroCasuale] = true;
                     matrice[i][j] = numeroCasuale;
