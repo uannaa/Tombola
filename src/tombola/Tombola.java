@@ -124,9 +124,13 @@ public class Tombola {
                     
                     System.out.print(cartella[i][j] + " ");
                     
-                } else if (cartella[i][j] == 0 || cartella[i][j] > 90) {
+                } else if (cartella[i][j] == 0) {
                     
                     System.out.print("// ");
+                    
+                } else if (cartella[i][j] > 90) {
+                    
+                    System.out.print("|| ");
                     
                 }
                 
@@ -154,12 +158,15 @@ public class Tombola {
         
         int estratto[] = new int[90];
         int contatore = 0;
+        int contatore91 = 0;
+        boolean ambo = false, terno = false, quaterna = false, quintina = false;
         
         for (int i = 0; i < estratto.length; i++) {
             
             System.out.println("Vuoi estrarre un numero?\n[1] Si \n[2] No\n");
             char select = s.next().charAt(0);
             
+
             if (select == '1') {
                 
                 estratto[i] = rand.nextInt(90 - 1) + 1;
@@ -178,7 +185,57 @@ public class Tombola {
                             System.out.println();
                             contatore++;
                             
-                           
+                            if (contatore >= 2) {
+                                
+                                //Se in quella riga ci sono 2 o piu numeri uguali a 91, allora segnalare il numero dei numeri equivalenti a 91.
+                                // 2 = ambo ...
+                                int nf = 1;
+                                
+                                 for (int f = 0; f < cartella.length; f++) {
+                                    
+                                    for (int j = 0; j < cartella[f].length; j++) {
+                                        
+                                        if (cartella[f][j] == 91) {
+                                            
+                                            if (nf != f) {
+                                                
+                                                contatore91 = 0;
+                                                nf = f;
+                                                
+                                            }
+                                            
+                                            contatore91++;
+                                            
+                                        }
+                                        
+                                    }
+                                    
+                                    if (ambo == false && contatore91 == 2) {
+                                        
+                                        System.err.println("Hai fatto ambo nella riga " + (f + 1));
+                                        ambo = true;
+                                        
+                                    } else if (ambo == true && terno == false && contatore91 == 3) {
+                                        
+                                        System.err.println("Hai fatto terno nella riga " + (f + 1));
+                                        terno = true;
+                                        
+                                    } else if (ambo == true && terno == true && quaterna == false && contatore91 == 4) {
+                                        
+                                        System.err.println("Hai fatto quaterna nella riga " + (f + 1));
+                                        quaterna = true;
+                                        
+                                    } else if (ambo == true && terno == true && quaterna == true && quintina == false && contatore91 == 5) {
+                                        
+                                        System.err.println("Hai fatto quintina nella riga " + (f + 1));
+                                        quintina = true;
+                                        
+                                    } 
+                                    
+                                }
+                                 
+                            }
+                            
                         }
                         
                     }
@@ -189,6 +246,8 @@ public class Tombola {
                 
                 
             } else if (select == '2') {
+                
+                
                 
                 break;
                 
