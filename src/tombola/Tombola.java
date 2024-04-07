@@ -19,7 +19,7 @@ public class Tombola {
         
         int cartella[][] = new int[3][9];
         int tombolone[][] = new int[9][10];
-        
+        int suidbhwiu = 0;
         
 
         Tabellone(tombolone);
@@ -28,6 +28,12 @@ public class Tombola {
         System.out.println("\nCartella: \n");
         print(cartella);
         estrainumero(cartella, tombolone);
+        
+        if (suidbhwiu == 99) {
+            
+            suidbhwiu = 0;
+            
+        }
         
     }
     
@@ -181,6 +187,7 @@ public class Tombola {
         int estratto[] = new int[90];
         int contatore = 0;
         int contatore91 = 0;
+        int contatoreTabella = 0;
         
         for (int i = 0; i < estratto.length; i++) {
             
@@ -208,6 +215,7 @@ public class Tombola {
                             System.out.println();
                             contatore++;
                             controlla(contatore, cartella, false);
+                            break;
                             
                         }
                         
@@ -217,7 +225,7 @@ public class Tombola {
                 
                 System.out.println();
                 
-                int contatoreTabella = 0;
+                
                 
                 for (int z = 0; z < tabellone.length; z++) {
                     
@@ -227,10 +235,10 @@ public class Tombola {
                         
                             tabellone[z][b] = 91;
                             System.out.println("Il tabellone ha questo numero!");
-                            System.out.println("Tabellone aggiornato: ");
                             printTombolone(tabellone);
-                            contatoreTabella = 0;
+                            contatoreTabella++;
                             controlla(contatoreTabella, tabellone, true);
+                            break;
                             
                         }
                         
@@ -263,114 +271,70 @@ public class Tombola {
         
         
         //Cartella
-        if (contatore >= 2 && check == false) {
+        if (check == false) {
+            
+            if (contatore >= 2) {
+                
+            //Se in quella riga ci sono 2 o piu numeri uguali a 91, allora segnalare il numero dei numeri equivalenti a 91.
+            // 2 = ambo ...
+                int nf = 1;
 
-        //Se in quella riga ci sono 2 o piu numeri uguali a 91, allora segnalare il numero dei numeri equivalenti a 91.
-        // 2 = ambo ...
-            int nf = 1;
+                for (int f = 0; f < matrice.length; f++) {
 
-            for (int f = 0; f < matrice.length; f++) {
+                    for (int j = 0; j < matrice[f].length; j++) {
 
-                for (int j = 0; j < matrice[f].length; j++) {
+                        if (matrice[f][j] == 91) {
 
-                    if (matrice[f][j] == 91) {
+                            if (nf != f) {
 
-                        if (nf != f) {
+                                contatore91 = 0;
+                                nf = f;
 
-                            contatore91 = 0;
-                            nf = f;
+                            }
+
+                            contatore91++;
 
                         }
 
-                        contatore91++;
-
                     }
 
+                    if (ambo == 0 && contatore91 == 2) {
+
+                        System.err.println("Hai fatto ambo nella riga " + (f + 1));
+                        ambo = 1;
+
+                    } else if (ambo == 1 && terno == 0 && contatore91 == 3) {
+
+                        System.err.println("Hai fatto terno nella riga " + (f + 1));
+                        terno = 1;
+
+                    } else if (ambo == 1 && terno == 1 && quaterna == 0 && contatore91 == 4) {
+
+                        System.err.println("Hai fatto quaterna nella riga " + (f + 1));
+                        quaterna = 1;
+
+                    } else if (ambo == 1 && terno == 1 && quaterna == 1 && quintina == 0 && contatore91 == 5) {
+
+                        System.err.println("Hai fatto quintina nella riga " + (f + 1));
+                        quintina = 1;
+
+                    } 
+
                 }
-
-                if (ambo == 0 && contatore91 == 2) {
-
-                    System.err.println("Hai fatto ambo nella riga " + (f + 1));
-                    ambo = 1;
-  
-                } else if (ambo == 1 && terno == 0 && contatore91 == 3) {
-
-                    System.err.println("Hai fatto terno nella riga " + (f + 1));
-                    terno = 1;
-
-                } else if (ambo == 1 && terno == 1 && quaterna == 0 && contatore91 == 4) {
-
-                    System.err.println("Hai fatto quaterna nella riga " + (f + 1));
-                    quaterna = 1;
-
-                } else if (ambo == 1 && terno == 1 && quaterna == 1 && quintina == 0 && contatore91 == 5) {
-
-                    System.err.println("Hai fatto quintina nella riga " + (f + 1));
-                    quintina = 1;
-
-                } 
-
+                
             }
 
-        }
-        
-        //tabellone        
-        if (contatore >= 2 && check == true) {
+        } else if (check == true) {
             
-            int nt = 1;
-            
-            for (int i = 0; i < matrice.length; i++) {
+            if (contatore >= 2) {
                 
-                for (int l = 0; l < 5; l++) {
-                    
-                    if (matrice[i][l] == 91) {
-                        
-                        if (nt != i) {
-                            
-                            contatore91 = 0;
-                            nt = i;
-                            
-                        }
-                        
-                        contatore91++;
-                        
-                    }
-                    
-                } 
-                
-                if (ambo == 1 || ambo == 0 && contatore91 == 2) {
-
-                    System.err.println("Hai fatto ambo nella riga " + (i + 1));
-                    ambo = 2;
-
-                } else if (ambo == 2 && terno == 0 || terno == 1 && contatore91 == 3) {
-
-                    System.err.println("Hai fatto terno nella riga " + (i + 1));
-                    terno = 2;
-
-                } else if (ambo == 2 && terno == 2 && quaterna == 0 || quaterna == 1 && contatore91 == 4) {
-
-                    System.err.println("Hai fatto quaterna nella riga " + (i + 1));
-                    quaterna = 2;
-
-                } else if (ambo == 2 && terno == 2 && quaterna == 2 && quintina == 0 || quintina == 1&& contatore91 == 5) {
-
-                    System.err.println("Hai fatto quintina nella riga " + (i + 1));
-                    quintina = 2;
-
-                }
+                System.err.println("2 NUMERI!");
                 
             }
             
         }
         
     }
-    
-//    public static void ControllaTabellone() {
-//        
-//         int nf = 1;
-//        
-//    }
     
     public static void rimuoviDuplicatiEGeneraCasualeColonne(int[][] matrice, int max, int min) {
         Random random = new Random();
