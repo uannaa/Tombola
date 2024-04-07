@@ -23,10 +23,11 @@ public class Tombola {
         
 
         Tabellone(tombolone);
+        printTombolone(tombolone);
         CreaCartella(cartella);
         System.out.println("\nCartella: \n");
         print(cartella);
-        estrainumero(cartella);
+        estrainumero(cartella, tombolone);
         
     }
     
@@ -45,6 +46,10 @@ public class Tombola {
             
         }
         
+    }
+    
+    public static void printTombolone(int matrice[][]) {
+        
         System.out.println("Tombolone: \n");
         
         for (int i = 0; i < matrice.length; i ++) {
@@ -57,9 +62,25 @@ public class Tombola {
                     
                 }
                 
-
                 
-                System.out.print(matrice[i][j] + " ");
+                if (matrice[i][j] == 91) {
+                    
+                    System.out.print("||" + " ");
+                    
+                    if (j == 4) {
+                        
+                        System.out.print("| ");
+                        
+                    }
+                    
+                }
+                
+
+                if (matrice[i][j] != 91) {
+                    
+                    System.out.print(matrice[i][j] + " "); 
+                    
+                }
                 
                 if(matrice[i][j] % 10 == 5) {
                     
@@ -152,7 +173,7 @@ public class Tombola {
         
     }
     
-    public static int[] estrainumero(int cartella[][]) {
+    public static int[] estrainumero(int cartella[][], int tabellone[][]) {
                 
         Random rand = new Random();
         Scanner s = new Scanner(System.in);
@@ -160,7 +181,6 @@ public class Tombola {
         int estratto[] = new int[90];
         int contatore = 0;
         int contatore91 = 0;
-        boolean ambo = false, terno = false, quaterna = false, quintina = false;
         
         for (int i = 0; i < estratto.length; i++) {
             
@@ -173,6 +193,8 @@ public class Tombola {
                 estratto[i] = rand.nextInt(90 - 1) + 1;
                 System.out.println("Il numero estratto e' " + estratto[i]);
                 
+                
+                //Cartella
                 for (int h = 0; h < cartella.length; h++) {
                     
                     for (int g = 0; g < cartella[h].length; g++) {
@@ -185,7 +207,7 @@ public class Tombola {
                             print(cartella);
                             System.out.println();
                             contatore++;
-                            controllaCartella(contatore, cartella);
+                            controlla(contatore, cartella, false);
                             
                         }
                         
@@ -194,6 +216,27 @@ public class Tombola {
                 }
                 
                 System.out.println();
+                
+                int contatoreTabella = 0;
+                
+                for (int z = 0; z < tabellone.length; z++) {
+                    
+                    for (int b = 0; b < tabellone[z].length; b++) {
+                        
+                        if (tabellone[z][b] == estratto[i]) {
+                        
+                            tabellone[z][b] = 91;
+                            System.out.println("Il tabellone ha questo numero!");
+                            System.out.println("Tabellone aggiornato: ");
+                            printTombolone(tabellone);
+                            contatoreTabella = 0;
+                            controlla(contatoreTabella, tabellone, true);
+                            
+                        }
+                        
+                    }
+                    
+                }
                 
                 
             } else if (select == '2') {
@@ -213,22 +256,24 @@ public class Tombola {
         
     }
     
-    public static void controllaCartella(int contatore, int cartella[][]) {
+    public static void controlla(int contatore, int matrice[][], boolean check) {
         
-        boolean ambo = false, terno = false, quaterna = false, quintina = false;
+        int ambo = 0, terno = 0, quaterna = 0, quintina = 0;
         int contatore91 = 0;
         
-        if (contatore >= 2) {
+        
+        //Cartella
+        if (contatore >= 2 && check == false) {
 
         //Se in quella riga ci sono 2 o piu numeri uguali a 91, allora segnalare il numero dei numeri equivalenti a 91.
         // 2 = ambo ...
             int nf = 1;
 
-            for (int f = 0; f < cartella.length; f++) {
+            for (int f = 0; f < matrice.length; f++) {
 
-                for (int j = 0; j < cartella[f].length; j++) {
+                for (int j = 0; j < matrice[f].length; j++) {
 
-                    if (cartella[f][j] == 91) {
+                    if (matrice[f][j] == 91) {
 
                         if (nf != f) {
 
@@ -243,25 +288,25 @@ public class Tombola {
 
                 }
 
-                if (ambo == false && contatore91 == 2) {
+                if (ambo == 0 && contatore91 == 2) {
 
                     System.err.println("Hai fatto ambo nella riga " + (f + 1));
-                    ambo = true;
-
-                } else if (ambo == true && terno == false && contatore91 == 3) {
+                    ambo = 1;
+  
+                } else if (ambo == 1 && terno == 0 && contatore91 == 3) {
 
                     System.err.println("Hai fatto terno nella riga " + (f + 1));
-                    terno = true;
+                    terno = 1;
 
-                } else if (ambo == true && terno == true && quaterna == false && contatore91 == 4) {
+                } else if (ambo == 1 && terno == 1 && quaterna == 0 && contatore91 == 4) {
 
                     System.err.println("Hai fatto quaterna nella riga " + (f + 1));
-                    quaterna = true;
+                    quaterna = 1;
 
-                } else if (ambo == true && terno == true && quaterna == true && quintina == false && contatore91 == 5) {
+                } else if (ambo == 1 && terno == 1 && quaterna == 1 && quintina == 0 && contatore91 == 5) {
 
                     System.err.println("Hai fatto quintina nella riga " + (f + 1));
-                    quintina = true;
+                    quintina = 1;
 
                 } 
 
@@ -269,13 +314,63 @@ public class Tombola {
 
         }
         
+        //tabellone        
+        if (contatore >= 2 && check == true) {
+            
+            int nt = 1;
+            
+            for (int i = 0; i < matrice.length; i++) {
+                
+                for (int l = 0; l < 5; l++) {
+                    
+                    if (matrice[i][l] == 91) {
+                        
+                        if (nt != i) {
+                            
+                            contatore91 = 0;
+                            nt = i;
+                            
+                        }
+                        
+                        contatore91++;
+                        
+                    }
+                    
+                } 
+                
+                if (ambo == 1 || ambo == 0 && contatore91 == 2) {
+
+                    System.err.println("Hai fatto ambo nella riga " + (i + 1));
+                    ambo = 2;
+
+                } else if (ambo == 2 && terno == 0 || terno == 1 && contatore91 == 3) {
+
+                    System.err.println("Hai fatto terno nella riga " + (i + 1));
+                    terno = 2;
+
+                } else if (ambo == 2 && terno == 2 && quaterna == 0 || quaterna == 1 && contatore91 == 4) {
+
+                    System.err.println("Hai fatto quaterna nella riga " + (i + 1));
+                    quaterna = 2;
+
+                } else if (ambo == 2 && terno == 2 && quaterna == 2 && quintina == 0 || quintina == 1&& contatore91 == 5) {
+
+                    System.err.println("Hai fatto quintina nella riga " + (i + 1));
+                    quintina = 2;
+
+                }
+                
+            }
+            
+        }
+        
     }
     
-    public static void ControllaTabellone() {
-        
-         
-        
-    }
+//    public static void ControllaTabellone() {
+//        
+//         int nf = 1;
+//        
+//    }
     
     public static void rimuoviDuplicatiEGeneraCasualeColonne(int[][] matrice, int max, int min) {
         Random random = new Random();
