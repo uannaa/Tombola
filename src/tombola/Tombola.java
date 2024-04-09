@@ -19,7 +19,6 @@ public class Tombola {
         
         int cartella[][] = new int[3][9];
         int tombolone[][] = new int[9][10];
-        int suidbhwiu = 0;
         
 
         Tabellone(tombolone);
@@ -28,12 +27,6 @@ public class Tombola {
         System.out.println("\nCartella: \n");
         print(cartella);
         estrainumero(cartella, tombolone);
-        
-        if (suidbhwiu == 99) {
-            
-            suidbhwiu = 0;
-            
-        }
         
     }
     
